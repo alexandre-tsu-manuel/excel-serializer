@@ -209,15 +209,15 @@ class ExcelEncoder:
         :param lst: The list to write.
         :return: The end row (1-based), end column (1-based), and columns' name of the sheet.
         """
-        cols = ("ID", "Value")
+        cols = ("Value",)
         type_cell.value = (
             f"{'List' if isinstance(lst, list) else 'Tuple'} {type_cell.value}"
         )
         sheet.append((type_cell,))
         sheet.append(cols)
         for i, e in enumerate(lst):
-            sheet.append((i + 1, self.encode(sheet, i + 3, 2, str(i + 1), e)))
-        return 2 + len(lst), 2, cols
+            sheet.append((self.encode(sheet, i + 3, 1, str(i + 1), e),))
+        return 2 + len(lst), 1, cols
 
     def write_dict_list(
         self, sheet: Worksheet, type_cell: WriteOnlyCell, dct_lst: Sequence[dict]
@@ -239,13 +239,9 @@ class ExcelEncoder:
                         f"Cannot convert DictList key {type(key)}:{key} to Excel"
                     )
                 keys.remove(key)
-        cols = (
-            "ID",
-            *(
-                str(k) if type(k) in KNOWN_TYPES else str(self._default(k))
-                for k in keys
-            ),
-        )
+        cols = [
+            str(k) if type(k) in KNOWN_TYPES else str(self._default(k)) for k in keys
+        ]
         type_cell.value = f"DictList {type_cell.value}"
         sheet.append((type_cell,))
         sheet.append(cols)
@@ -253,17 +249,12 @@ class ExcelEncoder:
         for e in dct_lst:
             i += 1
             sheet.append(
-                (
-                    i,
-                    *(
-                        self.encode(
-                            sheet, i + 3, j + 2, f"{i}{self.separator}{k}", e[k]
-                        )
-                        for j, k in enumerate(keys)
-                    ),
-                )
+                [
+                    self.encode(sheet, i + 3, j + 1, f"{i}{self.separator}{k}", e[k])
+                    for j, k in enumerate(keys)
+                ]
             )
-        return 2 + i, len(keys) + 1, cols
+        return 2 + i, len(keys), cols
 
     def encode(
         self, sheet: Worksheet, row: int, col: int, name: str, value: object

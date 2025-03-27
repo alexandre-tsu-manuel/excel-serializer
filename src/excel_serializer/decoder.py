@@ -94,31 +94,23 @@ class ExcelDecoder:
         :return: Decoded list.
         """
         headers = next(rows)
-        if len(headers) != 2:
+        if len(headers) != 1:
             raise ExcelDecodeError(
-                f"Invalid list headers. Expected 2, found {len(headers)}",
+                f"Invalid list headers. Expected 1, found {len(headers)}",
                 self.workbook,
                 sheet_name,
                 2,
                 len(headers) + 1,
             )
-        if headers[0].value != "ID":
+        if headers[0].value != "Value":
             raise ExcelDecodeError(
-                f'Invalid list headers. Expected "ID", found "{headers[0].value}"',
+                f'Invalid list headers. Expected "Value", found "{headers[0].value}"',
                 self.workbook,
                 sheet_name,
                 2,
                 1,
             )
-        if headers[1].value != "Value":
-            raise ExcelDecodeError(
-                f'Invalid list headers. Expected "Value", found "{headers[1].value}"',
-                self.workbook,
-                sheet_name,
-                2,
-                2,
-            )
-        return [self.read_value(row[1]) for row in rows]
+        return [self.read_value(row[0]) for row in rows]
 
     def read_dict_list(
         self, sheet_name: str, rows: Iterator
@@ -131,14 +123,9 @@ class ExcelDecoder:
         :return: Decoded list of dictionaries.
         """
         headers = next(rows)
-        if headers[0].value != "ID":
-            raise ExcelDecodeError(
-                f"Invalid dict list headers", self.workbook, sheet_name, 2, 1
-            )
-        keys = [header.value for header in headers[1:]]
+        keys = [header.value for header in headers]
         return [
-            {key: self.read_value(row[j + 1]) for j, key in enumerate(keys)}
-            for row in rows
+            {key: self.read_value(row[j]) for j, key in enumerate(keys)} for row in rows
         ]
 
     def read_dict(self, sheet_name: str, rows: Iterator) -> dict[str, object]:
