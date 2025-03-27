@@ -1,6 +1,6 @@
-# Excel Serializer ![PyPI](https://img.shields.io/pypi/v/excel-serializer?label=excel-serializer)
+# Excel Serializer <!-- start-no-pypi --> ![PyPI](https://img.shields.io/pypi/v/excel-serializer?label=excel-serializer) <!-- end-no-pypi -->
 
-![Example](./example.png)
+![Example](https://github.com/alexandre-tsu-manuel/excel-serializer/raw/main/example.png)
 
 Excel Serializer is a Python package that provides a set of functions and classes to serialize and deserialize Python objects to and from Excel files. The API is designed to be intuitive and familiar, closely mirroring the interface of the built-in `json` module. This makes it easy to configure and use for developers who are already accustomed to working with JSON serialization.
 
