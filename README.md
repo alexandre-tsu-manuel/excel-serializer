@@ -1,4 +1,4 @@
-# Excel Serializer <!-- start-no-pypi --> ![PyPI](https://img.shields.io/pypi/v/excel-serializer?label=excel-serializer) <!-- end-no-pypi -->
+# Excel Serializer
 
 ![Example](https://github.com/alexandre-tsu-manuel/excel-serializer/raw/main/example.png)
 
