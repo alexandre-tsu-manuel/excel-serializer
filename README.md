@@ -83,7 +83,7 @@ class CustomEncoder(es.ExcelEncoder):
         sheet.append(cols)
         for i, e in enumerate(st):
             sheet.append((i + 1, self.encode(sheet, i + 3, 2, str(i + 1), e)))
-        return 2 + len(st), 2, cols
+        return 2 + len(st), 1, cols
     
     def write_custom_type(self, sheet, type_cell, obj):
         if isinstance(obj, set):
@@ -102,6 +102,9 @@ import excel_serializer as es
 class CustomDecoder(es.ExcelDecoder):
     def read_set(self, sheet_name, rows):
         headers = next(rows)
+        if len(headers) != 1:
+            raise es.ExcelDecodeError(f'Invalid list headers. Expected 1, found {len(headers)}',
+                                   self.workbook, sheet_name, 2, len(headers) + 1)
         if headers[0].value != 'Value':
             raise es.ExcelDecodeError(f'Invalid list headers. Expected "Value", found "{headers[0].value}"',
                                       self.workbook, sheet_name, 2, 1)
