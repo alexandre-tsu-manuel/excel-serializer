@@ -254,7 +254,7 @@ class ExcelEncoder:
             i += 1
             sheet.append(
                 (
-                    i + 1,
+                    i,
                     *(
                         self.encode(
                             sheet, i + 3, j + 2, f"{i}{self.separator}{k}", e[k]
