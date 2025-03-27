@@ -106,7 +106,7 @@ Using a custom decoder::
     {'numbers': {1, 2, 3}}
 """
 
-__version__ = "1.0.0"
+__version__ = "1.1.0"
 __all__ = [
     "dump",
     "dumpw",
